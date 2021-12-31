@@ -11,14 +11,13 @@ import ourtags
 def web_scraper():
     # chrome_options = Options()
     # chrome_options.add_argument("--headless")
-    # chrome_options.add_argument("--window-size=1920x1080")
-    book = str(input("What is the book title ")).replace(' ', '+')
+    # chrome_options.add_argument("--window-size=1920x1080")W
+    book = str(input("What is the book title? ")).replace(' ', '+')
     global driver
     driver = webdriver.Chrome('./chromedriver.exe') 
     driver.get(f'https://www.goodreads.com/search?utf8=%E2%9C%93&query={book}')
     while(True):
         try:
-
             click_first = driver.find_element(By.XPATH,"/html/body/div[2]/div[3]/div[1]/div[2]/div[2]/table/tbody/tr[1]/td[2]/a/span")
             click_first.click()
         except:
@@ -27,24 +26,9 @@ def web_scraper():
             break
     sleep(3)
 
-    #Get rid of the weird popup
-    try:
-        dismiss = driver.find_element(By.XPATH, "/html/body/div[3]/div/div/div[1]/button")
-        action = webdriver.common.action_chains.ActionChains(driver)
-        action.move_to_element_with_offset(dismiss, 5, 5)
-        action.click()
-        action.perform()
-        webdriver.ActionChains(driver).send_keys(Keys.ESCAPE).perform()
-    except:
-        dismiss2 = driver.find_element(By.XPATH, "/html/body/div[3]/div/div[1]/div/div/button")
-        action.move_to_element_with_offset(dismiss2, 5, 5)
-        action.click()
-        action.perform()
-        webdriver.ActionChains(driver).send_keys(Keys.ESCAPE).perform()
-        pass
-
-    click_shelves = driver.find_element(By.XPATH,"/html/body/div[2]/div[3]/div[1]/div[2]/div[5]/div[7]/div/div[2]/div/a")
-    click_shelves.click()
+    url_index = driver.current_url.rfind('/')
+    book_id = driver.current_url[url_index + 1:]
+    driver.get(f'https://www.goodreads.com/book/shelves/{book_id}')
     tags = driver.find_elements(By.XPATH,"//div[@class='shelfStat']")
     dictionary = {}
     print(ourtags.returntags())
