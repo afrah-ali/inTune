@@ -31,7 +31,6 @@ def web_scraper():
     driver.get(f'https://www.goodreads.com/book/shelves/{book_id}')
     tags = driver.find_elements(By.XPATH,"//div[@class='shelfStat']")
     dictionary = {}
-    print(ourtags.returntags())
     for i in tags:
         if i.text.split()[0] in ourtags.returntags():
             dictionary.update({f"{i.text.split()[0]}": f"{i.text.split()[1]}"})
