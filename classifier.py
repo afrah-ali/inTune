@@ -7,10 +7,9 @@ import pandas as pd
 # preprocess data
 
 # load dataset
-df = pd.read_csv(r'C:\Users\Afrah\Desktop\inTune\datset.csv', index_col=False)
+df = pd.read_csv('https://raw.githubusercontent.com/aali179/inTune/main/datset.csv', index_col=False)
 # drop columns
 df = df.drop(['Unnamed: 0','track_name','track_id', 'artist'], axis=1)
-df = df.drop(df.index[0])
 
 # numerically encode genres
 genre_map = {"eerie":1,
@@ -47,9 +46,7 @@ df[num_cols] = scaler.fit_transform(df[num_cols])
 
 # split dataset for training and testing
 feature = df.drop(['genre'], axis=1)
-print(feature)
 target = df['genre']
-print(target)
 # Set Training and Testing Data as 9:1
 X_train, X_test, y_train, y_test = train_test_split(feature , target, 
                                                     shuffle = True, 
@@ -66,10 +63,10 @@ knn = KNeighborsClassifier()
 knn.fit(X_train, y_train)
 #Predict the model with the test data
 y_preds = knn.predict(X_test)
-print("Real", y_test)
-print("Predicted", y_preds)
 
 # Analysis
 #Create the confusion matrix using test data and predictions
+print("Real", y_test)
+print("Predicted", y_preds)
 print(metrics.confusion_matrix(y_test, y_preds))
 print(metrics.classification_report(y_test, y_preds))
