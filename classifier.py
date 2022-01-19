@@ -3,6 +3,10 @@ from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn import metrics
 import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+from sklearn import neighbors
+
 
 # preprocess data
 
@@ -46,8 +50,12 @@ num_cols = list(df.columns)[2:]
 df[num_cols] = scaler.fit_transform(df[num_cols])
 
 # split dataset for training and testing
+<<<<<<< Updated upstream
 feature = df.drop(['genre'], axis=1)
 print(feature)
+=======
+feature = df.drop(['genre', 'mode', 'key'], axis=1)
+>>>>>>> Stashed changes
 target = df['genre']
 print(target)
 # Set Training and Testing Data as 9:1
@@ -62,7 +70,7 @@ print('Shape of training label:', y_train.shape)
 print('Shape of training label:', y_test.shape)
 
 # Building KNN model, using k=5 neighbours
-knn = KNeighborsClassifier()
+knn = neighbors.KNeighborsClassifier(n_neighbors=5,n_jobs=-1)
 knn.fit(X_train, y_train)
 #Predict the model with the test data
 y_preds = knn.predict(X_test)
@@ -73,3 +81,4 @@ print("Predicted", y_preds)
 #Create the confusion matrix using test data and predictions
 print(metrics.confusion_matrix(y_test, y_preds))
 print(metrics.classification_report(y_test, y_preds))
+#print (df)
