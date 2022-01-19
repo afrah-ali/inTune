@@ -50,12 +50,7 @@ num_cols = list(df.columns)[2:]
 df[num_cols] = scaler.fit_transform(df[num_cols])
 
 # split dataset for training and testing
-<<<<<<< Updated upstream
-feature = df.drop(['genre'], axis=1)
-print(feature)
-=======
 feature = df.drop(['genre', 'mode', 'key'], axis=1)
->>>>>>> Stashed changes
 target = df['genre']
 print(target)
 # Set Training and Testing Data as 9:1
