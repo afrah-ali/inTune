@@ -2,6 +2,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn import metrics
+from math import floor
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -11,37 +12,62 @@ from sklearn import neighbors
 # preprocess data
 
 # load dataset
-df = pd.read_csv(r'C:\Users\Afrah\Desktop\inTune\datset.csv', index_col=False)
+df = pd.read_csv(r'.\datset.csv', index_col=False)
 # drop columns
 df = df.drop(['Unnamed: 0','track_name','track_id', 'artist'], axis=1)
 df = df.drop(df.index[0])
 
 # numerically encode genres
-genre_map = {"eerie":1,
-            "gritty":2,
-            "melancholy":3,
-            "peaceful":4,
-            "hopeful":5,
-            "adventure":6,
-            "dystopia":7,
-            "light_academia":8,
-            "gothic":9,
-            "epic":10,
-            "battle":11,
-            "suspense":12,
-            "dreamy":13,
-            "elegant":14,
-            "sensual":15,
-            "ethereal":16,
-            "tragedy":17,
-            "sentimental":18,
-            "urban":19,
-            "romance":20,
-            "slice_of_life":21,
-            "coming_of_age":22,
-            "cyberpunk":23,
-            "supernatural":24,
-            "eccentric":25}
+# genre_map = {"eerie":1,
+#             "gritty":2,
+#             "melancholy":3,
+#             "peaceful":4,
+#             "hopeful":5,
+#             "adventure":6,
+#             "dystopia":7,
+#             "light_academia":8,
+#             "gothic":9,
+#             "epic":10,
+#             "battle":11,
+#             "suspense":12,
+#             "dreamy":13,
+#             "elegant":14,
+#             "sensual":15,
+#             "ethereal":16,
+#             "tragedy":17,
+#             "sentimental":18,
+#             "urban":19,
+#             "romance":20,
+#             "slice_of_life":21,
+#             "coming_of_age":22,
+#             "cyberpunk":23,
+#             "supernatural":24,
+#             "eccentric":25}
+genre_map = {"eerie":101,
+            "suspense":102,
+            "battle":103,
+            "epic":201,
+            "adventure":202,
+            "hopeful":203,
+            "peaceful":301,
+            "slice_of_life":302,
+            "coming_of_age":303,
+            "elegant":304,
+            "dystopia":401,
+            "tragedy":402,
+            "gritty":403,
+            "gothic":404,
+            "melancholy":501,
+            "sentimental":502,
+            "eccentric":601,
+            "supernatural":602,
+            "urban":701,
+            "cyberpunk":702,
+            "dreamy":801,
+            "ethereal":802,
+            "romance":901,
+            "sensual":902,
+            "light_academia":25}
 df = df.replace(genre_map)
 
 # scale numerical data
@@ -69,6 +95,8 @@ knn = neighbors.KNeighborsClassifier(n_neighbors=5,n_jobs=-1)
 knn.fit(X_train, y_train)
 #Predict the model with the test data
 y_preds = knn.predict(X_test)
+y_preds = (y_preds[y_preds>0]/100).astype(int)
+y_test = (y_test[y_test>0]/100).astype(int)
 print("Real", y_test)
 print("Predicted", y_preds)
 

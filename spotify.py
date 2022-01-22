@@ -275,5 +275,5 @@ df = pd.DataFrame(data, columns = ['genre', 'track_name', 'artist','track_id', '
                                    'instrumentalness', 'key', 'liveness', 'loudness', 'mode', 'speechiness',
                                    'tempo', 'time_signature', 'valence'])
 # export to csv file
-df.to_csv(r'C:\Users\Afrah\Desktop\inTune\datset.csv', index=False)
+df.to_csv(r'.\datset.csv', index=False)
 print(df)
