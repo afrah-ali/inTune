@@ -1,12 +1,15 @@
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.naive_bayes import GaussianNB  
+from sklearn.ensemble import RandomForestClassifier
 from sklearn import metrics
 from math import floor
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn import neighbors
+# from spotify import get_track_name, get_acoustic_feature
 
 
 # preprocess data
@@ -76,7 +79,7 @@ num_cols = list(df.columns)[2:]
 df[num_cols] = scaler.fit_transform(df[num_cols])
 
 # split dataset for training and testing
-feature = df.drop(['genre', 'mode', 'key'], axis=1)
+feature = df.drop(['genre','mode','key'], axis=1)
 target = df['genre']
 print(target)
 # Set Training and Testing Data as 9:1
@@ -90,11 +93,22 @@ print('Shape of testing feature:', X_test.shape)
 print('Shape of training label:', y_train.shape)
 print('Shape of training label:', y_test.shape)
 
-# Building KNN model, using k=5 neighbours
-knn = neighbors.KNeighborsClassifier(n_neighbors=5,n_jobs=-1)
-knn.fit(X_train, y_train)
+#Building KNN model, using k=5 neighbours
+# classifier = neighbors.KNeighborsClassifier(n_neighbors=5,n_jobs=-1)
+
+# Naive Bayes algorithm
+#classifier = GaussianNB()  
+#Random forest
+classifier = RandomForestClassifier(random_state=42, n_jobs=-1, max_depth=5,
+                                       n_estimators=100, oob_score=True)
+
+classifier.fit(X_train, y_train)  
 #Predict the model with the test data
-y_preds = knn.predict(X_test)
+
+
+
+
+y_preds = classifier.predict(X_test)
 y_preds = (y_preds[y_preds>0]/100).astype(int)
 y_test = (y_test[y_test>0]/100).astype(int)
 print("Real", y_test)
@@ -104,4 +118,21 @@ print("Predicted", y_preds)
 #Create the confusion matrix using test data and predictions
 print(metrics.confusion_matrix(y_test, y_preds))
 print(metrics.classification_report(y_test, y_preds))
-#print (df)
+
+# Uses a new song's trackId and genre(provided by user), adds them to the dataframe, and then partialfits
+# def fitnewsong(trackId, genre):
+#     df.loc[len(df.index)] = [genre,get_acoustic_feature(trackId, 'acousticness'),
+#         get_acoustic_feature(trackId, 'danceability'),
+#         get_acoustic_feature(trackId, 'energy'),
+#         get_acoustic_feature(trackId, 'instrumentalness'),
+#         get_acoustic_feature(trackId, 'liveness'),
+#         get_acoustic_feature(trackId, 'loudness'),
+#         get_acoustic_feature(trackId, 'speechiness'),
+#         get_acoustic_feature(trackId, 'tempo'),
+#         get_acoustic_feature(trackId, 'time_signature'),
+#         get_acoustic_feature(trackId, 'valence')           
+#        ]
+#     feature = df.drop(['genre'], axis=1)
+#     target = df['genre'] 
+#     knn.partial_fit(feature[-1:], target[-1:])
+print(df)

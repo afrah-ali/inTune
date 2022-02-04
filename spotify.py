@@ -252,6 +252,7 @@ dataset = [{"genre": "eerie", "trackId" : "3Ot8c1sAmARXl31ZckeMDR"},
 # return data as [genre, track_name, artist, track_id, acousticness, danceability, energy, instrumentalness,
 # key, liveness, loudness, mode, speechiness, tempo, time_signature, valence]
 data = [[]]
+
 for i in dataset:
     genre = i.get("genre")
     trackId = i.get("trackId")
@@ -260,10 +261,8 @@ for i in dataset:
         get_acoustic_feature(trackId, 'danceability'),
         get_acoustic_feature(trackId, 'energy'),
         get_acoustic_feature(trackId, 'instrumentalness'),
-        get_acoustic_feature(trackId, 'key'),
         get_acoustic_feature(trackId, 'liveness'),
         get_acoustic_feature(trackId, 'loudness'),
-        get_acoustic_feature(trackId, 'mode'),
         get_acoustic_feature(trackId, 'speechiness'),
         get_acoustic_feature(trackId, 'tempo'),
         get_acoustic_feature(trackId, 'time_signature'),
@@ -272,7 +271,7 @@ for i in dataset:
 
 # create pandas DataFrame
 df = pd.DataFrame(data, columns = ['genre', 'track_name', 'artist','track_id', 'acousticness', 'danceability', 'energy',
-                                   'instrumentalness', 'key', 'liveness', 'loudness', 'mode', 'speechiness',
+                                   'instrumentalness', 'liveness', 'loudness', 'speechiness',
                                    'tempo', 'time_signature', 'valence'])
 # export to csv file
 df.to_csv(r'.\datset.csv', index=False)
